@@ -103,3 +103,33 @@ int strcmp(unsigned short *s1, unsigned short *s2)
         return (int)(*s1 - *s2);
     }
 }
+
+void strncpy(unsigned short *dst, unsigned short *src, unsigned long long n)
+{
+    while (n--)
+    {
+        *dst++ = *src++;
+    }
+}
+
+unsigned char check_warn_error(unsigned long long status, unsigned short *message)
+{
+    if (status)
+    {
+        puts(message);
+        puts(L":");
+        puth(status, 16);
+        puts(L"\r\n");
+    }
+
+    return status;
+}
+
+void assert(unsigned long long status, unsigned short *message)
+{
+    if (!check_warn_error(status, message))
+    {
+        while (1)
+            ;
+    }
+}
