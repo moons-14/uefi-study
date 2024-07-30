@@ -1,0 +1,14 @@
+#ifndef _COMMON_H
+#define _COMMON_H
+
+#define NULL (void *)0
+#define TRUE 1
+#define FALSE 0
+
+void putc(unsigned short c);
+void puts(unsigned short *s);
+unsigned short getc(void);
+unsigned int gets(unsigned short *buf, unsigned int buf_size);
+int strcmp(unsigned short *s1, unsigned short *s2);
+
+#endif
