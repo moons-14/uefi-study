@@ -9,6 +9,8 @@
 
 struct FILE
 {
+    struct RECT rect;
+    unsigned char is_highlight;
     unsigned short name[MAX_FILE_NAME_LEN];
 };
 

@@ -2,6 +2,10 @@
 #include "common.h"
 #include "graphics.h"
 #include "gui.h"
+#include "file.h"
+
+#define WIDTH_PER_CH 8
+#define HEIGHT_PER_CH 20
 
 struct EFI_GRAPHICS_OUTPUT_BLT_PIXEL cursor_tmp = {0, 0, 0, 0};
 int cursor_old_x = 0;
@@ -36,6 +40,36 @@ void put_cursor(int x, int y)
     cursor_old_y = y;
 }
 
+int ls_gui(void)
+{
+    int file_num;
+    struct RECT t;
+    int idx;
+
+    ST->ConOut->ClearScreen(ST->ConOut);
+
+    file_num = ls();
+
+    t.x = 0;
+    t.y = 0;
+    t.w = (MAX_FILE_NAME_LEN - 1) * WIDTH_PER_CH;
+    t.h = HEIGHT_PER_CH;
+
+    for (idx = 0; idx < file_num; idx++)
+    {
+        file_list[idx].rect.x = t.x;
+        file_list[idx].rect.y = t.y;
+        file_list[idx].rect.w = t.w;
+        file_list[idx].rect.h = t.h;
+        draw_rect(file_list[idx].rect, white);
+        t.x += file_list[idx].rect.w + WIDTH_PER_CH;
+
+        file_list[idx].is_highlight = FALSE;
+    }
+
+    return file_num;
+}
+
 void gui(void)
 {
     struct RECT r = {10, 10, 20, 20};
@@ -45,11 +79,13 @@ void gui(void)
     int px = 0, py = 0;
     unsigned long long waitidx;
     unsigned char is_highlist = FALSE;
+    int file_num;
+    int idx;
 
     ST->ConOut->ClearScreen(ST->ConOut);
     SPP->Reset(SPP, FALSE);
 
-    draw_rect(r, white); // ファイルアイコンのような正方形を描画
+    file_num = ls_gui();
 
     while (TRUE)
     {
@@ -70,21 +106,23 @@ void gui(void)
 
             put_cursor(px, py); // カーソルを描画
 
-            // ファイルアイコンの処理
-            if (is_in_rect(px, py, r))
+            for (idx = 0; idx < file_num; idx++)
             {
-                if (!is_highlist)
+                if (is_in_rect(px, py, file_list[idx].rect))
                 {
-                    draw_rect(r, yellow);
-                    is_highlist = TRUE;
+                    if (!file_list[idx].is_highlight)
+                    {
+                        draw_rect(file_list[idx].rect, yellow);
+                        file_list[idx].is_highlight = TRUE;
+                    }
                 }
-            }
-            else
-            {
-                if (is_highlist)
+                else
                 {
-                    draw_rect(r, white);
-                    is_highlist = FALSE;
+                    if (file_list[idx].is_highlight)
+                    {
+                        draw_rect(file_list[idx].rect, white);
+                        file_list[idx].is_highlight = FALSE;
+                    }
                 }
             }
         }
