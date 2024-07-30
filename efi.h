@@ -7,11 +7,12 @@ struct EFI_INPUT_KEY
     unsigned short UnicodeChar;
 };
 
-struct EFI_GUID {
-	unsigned int Data1;
-	unsigned short Data2;
-	unsigned short Data3;
-	unsigned char Data4[8];
+struct EFI_GUID
+{
+    unsigned int Data1;
+    unsigned short Data2;
+    unsigned short Data3;
+    unsigned char Data4[8];
 };
 
 struct EFI_SYSTEM_TABLE
@@ -100,6 +101,7 @@ struct EFI_SYSTEM_TABLE
 
 extern struct EFI_SYSTEM_TABLE *ST;
 
+// 画面描画のためのプロトコル
 struct EFI_GRAPHICS_OUTPUT_PROTOCOL
 {
     unsigned long long _buf[3];
@@ -134,8 +136,26 @@ struct EFI_GRAPHICS_OUTPUT_BLT_PIXEL
     unsigned char Reserved;
 };
 
+// マウスポインタのプロトコル
+struct EFI_SIMPLE_POINTER_STATE
+{
+    int RelativeMovementX;     // x軸の相対移動量
+    int RelativeMovementY;     // y軸の相対移動量
+    int RelativeMovementZ;     // z軸の相対移動量
+    unsigned char LeftButton;  // 左ボタンの状態
+    unsigned char RightButton; // 右ボタンの状態
+};
+
+struct EFI_SIMPLE_POINTER_PROTOCOL
+{
+    unsigned long long (*Reset)(struct EFI_SIMPLE_POINTER_PROTOCOL *This, unsigned char ExtendedVerification);
+    unsigned long long (*GetState)(struct EFI_SIMPLE_POINTER_PROTOCOL *This, struct EFI_SIMPLE_POINTER_STATE *State);
+    void *WaitForInput;
+};
+
 extern struct EFI_SYSTEM_TABLE *ST;
 extern struct EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP;
+extern struct EFI_SIMPLE_POINTER_PROTOCOL *SPP;
 
 void efi_init(struct EFI_SYSTEM_TABLE *SystemTable);
 

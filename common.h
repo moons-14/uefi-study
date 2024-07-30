@@ -7,6 +7,7 @@
 
 void putc(unsigned short c);
 void puts(unsigned short *s);
+void puth(unsigned long long val, unsigned char num_digits);
 unsigned short getc(void);
 unsigned int gets(unsigned short *buf, unsigned int buf_size);
 int strcmp(unsigned short *s1, unsigned short *s2);
