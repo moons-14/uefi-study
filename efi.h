@@ -161,9 +161,9 @@ struct EFI_FILE_PROTOCOL
     unsigned long long (*Close) (struct EFI_FILE_PROTOCOL *This);
     unsigned long long _buf2;
     unsigned long long (*Read) (struct EFI_FILE_PROTOCOL *This, unsigned long long *BufferSize, void *Buffer);
-    unsigned long long (*Write) (struct EFI_FILE_PROTOCOL *This, unsigned long long *BufferSize, void *Buffer);
-    unsigned long long _buf3[4];
-    unsigned long long (*Flush) (struct EFI_FILE_PROTOCOL *This);
+    // unsigned long long (*Write) (struct EFI_FILE_PROTOCOL *This, unsigned long long *BufferSize, void *Buffer);
+    // unsigned long long _buf3[4];
+    // unsigned long long (*Flush) (struct EFI_FILE_PROTOCOL *This);
 };
 struct EFI_SIMPLE_FILE_SYSTEM_PROTOCOL
 {

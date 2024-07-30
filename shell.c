@@ -55,19 +55,21 @@ int ls(void)
 		assert(status, L"root->Read");
 		if (!buf_size)
 			break;
+
 		file_info = (struct EFI_FILE_INFO *)file_buf;
-		strncpy(file_list[idx].name, file_info->FileName, MAX_FILE_NAME_LEN - 1);
-		file_list[idx].name[MAX_FILE_NAME_LEN] = L'\0';
+		strncpy(file_list[idx].name, file_info->FileName,
+				MAX_FILE_NAME_LEN - 1);
+		file_list[idx].name[MAX_FILE_NAME_LEN - 1] = L'\0';
 		puts(file_list[idx].name);
 		puts(L" ");
 
 		idx++;
 	}
-
 	puts(L"\r\n");
 	file_num = idx;
 
 	root->Close(root);
+
 	return file_num;
 }
 
