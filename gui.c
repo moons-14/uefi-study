@@ -73,7 +73,7 @@ void gui(void)
             // ファイルアイコンの処理
             if (is_in_rect(px, py, r))
             {
-                if (is_highlist)
+                if (!is_highlist)
                 {
                     draw_rect(r, yellow);
                     is_highlist = TRUE;
