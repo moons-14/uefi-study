@@ -3,6 +3,7 @@
 #include "graphics.h"
 #include "gui.h"
 #include "file.h"
+#include "shell.h"
 
 #define WIDTH_PER_CH 8
 #define HEIGHT_PER_CH 20
@@ -72,13 +73,10 @@ int ls_gui(void)
 
 void gui(void)
 {
-    struct RECT r = {10, 10, 20, 20};
-
     unsigned long long status;
     struct EFI_SIMPLE_POINTER_STATE s;
     int px = 0, py = 0;
     unsigned long long waitidx;
-    unsigned char is_highlist = FALSE;
     int file_num;
     int idx;
 

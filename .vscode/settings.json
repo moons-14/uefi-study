@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "efi.h": "c",
-        "file.h": "c"
+        "file.h": "c",
+        "shell.h": "c"
     }
 }
