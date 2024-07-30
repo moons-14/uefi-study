@@ -73,6 +73,29 @@ int ls(void)
 	return file_num;
 }
 
+void cat(unsigned short *file_name)
+{
+	unsigned long long status;
+	struct EFI_FILE_PROTOCOL *root;
+	struct EFI_FILE_PROTOCOL *file;
+	unsigned long long buf_size = MAX_FILE_BUF;
+	unsigned short file_buf[MAX_FILE_BUF / 2];
+
+	status = SFSP->OpenVolume(SFSP, &root);
+	assert(status, L"SFSP->OpenVolume");
+
+	status = root->Open(root, &file, file_name, EFI_FILE_MODE_READ, 0);
+	assert(status, L"root->Open");
+
+	status = file->Read(file, &buf_size, (void *)file_buf);
+	assert(status, L"file->Read");
+
+	puts(file_buf);
+
+	file->Close(file);
+	root->Close(root);
+}
+
 void shell(void)
 {
 	unsigned short com[MAX_COMMAND_LEN];
@@ -94,6 +117,8 @@ void shell(void)
 			pstat();
 		else if (!strcmp(L"ls", com))
 			ls();
+		else if (!strcmp(L"cat", com))
+			cat(L"abc");
 		else
 			puts(L"Command not found.\r\n");
 	}
