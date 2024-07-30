@@ -30,7 +30,7 @@ unsigned int gets(unsigned short *buf, unsigned int buf_size)
 {
     unsigned int i;
 
-    for (i = 0; i < buf_size - 1; i++)
+    for (i = 0; i < buf_size - 1;)
     {
         buf[i] = getc();
         putc(buf[i]);
