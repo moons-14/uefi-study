@@ -7,6 +7,13 @@ struct EFI_INPUT_KEY
     unsigned short UnicodeChar;
 };
 
+struct EFI_GUID {
+	unsigned int Data1;
+	unsigned short Data2;
+	unsigned short Data3;
+	unsigned char Data4[8];
+};
+
 struct EFI_SYSTEM_TABLE
 {
     char _buf[44];
@@ -75,7 +82,9 @@ struct EFI_SYSTEM_TABLE
         //
         // Library Services
         //
-        unsigned long long _buf10[5];
+        unsigned long long _buf10[2];
+        unsigned long long (*LocateProtocol)(struct EFI_GUID *Protocol, void *Registration, void **Interface);
+        unsigned long long _buf10_2[2];
 
         //
         // 32-bit CRC Services
@@ -90,6 +99,43 @@ struct EFI_SYSTEM_TABLE
 };
 
 extern struct EFI_SYSTEM_TABLE *ST;
+
+struct EFI_GRAPHICS_OUTPUT_PROTOCOL
+{
+    unsigned long long _buf[3];
+    struct EFI_GRAPHICS_OUTPUT_PROTOCOL_MODE
+    {
+        unsigned int MaxMode;
+        unsigned int Mode;
+        struct EFI_GRAPHICS_OUTPUT_MODE_INFORMATION
+        {
+            unsigned int Version;
+            unsigned int HorizontalResolution;
+            unsigned int VerticalResolution;
+            enum EFI_GRAPHICS_PIXEL_FORMAT
+            {
+                PixelRedGreenBlueReserved8BitPerColor,
+                PixelBlueGreenRedReserved8BitPerColor,
+                PixelBitMask,
+                PixelBltOnly,
+                PixelFormatMax
+            } PixelFormat;
+        } *Info;
+        unsigned long long SizeOfInfo;
+        unsigned long long FrameBufferBase;
+    } *Mode;
+};
+
+struct EFI_GRAPHICS_OUTPUT_BLT_PIXEL
+{
+    unsigned char Blue;
+    unsigned char Green;
+    unsigned char Red;
+    unsigned char Reserved;
+};
+
+extern struct EFI_SYSTEM_TABLE *ST;
+extern struct EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP;
 
 void efi_init(struct EFI_SYSTEM_TABLE *SystemTable);
 
