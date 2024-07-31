@@ -46,7 +46,7 @@ unsigned short getc(void)
     while (ST->ConIn->ReadKeyStroke(ST->ConIn, &key))
         ;
 
-    return key.UnicodeChar;
+    return key.UnicodeChar ? key.UnicodeChar : key.ScanCode + SC_OFS;
 }
 
 unsigned int gets(unsigned short *buf, unsigned int buf_size)
@@ -114,18 +114,20 @@ void strncpy(unsigned short *dst, unsigned short *src, unsigned long long n)
 
 unsigned char check_warn_error(unsigned long long status, unsigned short *message)
 {
-	if (status) {
-		puts(message);
-		puts(L":");
-		puth(status, 16);
-		puts(L"\r\n");
-	}
+    if (status)
+    {
+        puts(message);
+        puts(L":");
+        puth(status, 16);
+        puts(L"\r\n");
+    }
 
-	return !status;
+    return !status;
 }
 
 void assert(unsigned long long status, unsigned short *message)
 {
-	if (!check_warn_error(status, message))
-		while (1);
+    if (!check_warn_error(status, message))
+        while (1)
+            ;
 }
