@@ -71,6 +71,15 @@ int ls_gui(void)
     return file_num;
 }
 
+void cat_gui(unsigned short *file_name)
+{
+    ST->ConOut->ClearScreen(ST->ConOut);
+    cat(file_name);
+
+    while (getc() != SC_ESC)
+        ;
+}
+
 void gui(void)
 {
     unsigned long long status;
@@ -79,6 +88,7 @@ void gui(void)
     unsigned long long waitidx;
     int file_num;
     int idx;
+    unsigned char prev_lb = FALSE;
 
     ST->ConOut->ClearScreen(ST->ConOut);
     SPP->Reset(SPP, FALSE);
@@ -113,6 +123,11 @@ void gui(void)
                         draw_rect(file_list[idx].rect, yellow);
                         file_list[idx].is_highlight = TRUE;
                     }
+                    if (prev_lb && !s.LeftButton)
+                    {
+                        cat_gui(file_list[idx].name);
+                        file_num = ls_gui();
+                    }
                 }
                 else
                 {
@@ -122,6 +137,8 @@ void gui(void)
                         file_list[idx].is_highlight = FALSE;
                     }
                 }
+
+                prev_lb = s.LeftButton;
             }
         }
     }

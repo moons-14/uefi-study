@@ -2,6 +2,8 @@
     "files.associations": {
         "efi.h": "c",
         "file.h": "c",
-        "shell.h": "c"
+        "shell.h": "c",
+        "graphics.h": "c",
+        "common.h": "c"
     }
 }

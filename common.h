@@ -1,9 +1,11 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#define NULL (void *)0
-#define TRUE 1
-#define FALSE 0
+#define NULL	(void *)0
+#define TRUE	1
+#define FALSE	0
+#define SC_OFS	0x1680
+#define SC_ESC	(SC_OFS + 0x0017)
 
 void putc(unsigned short c);
 void puts(unsigned short *s);
